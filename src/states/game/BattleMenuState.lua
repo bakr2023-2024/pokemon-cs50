@@ -47,6 +47,8 @@ function BattleMenuState:init(battleState)
 				gStateStack:pop()
 				-- remove battle menu
 				gStateStack:pop()
+				-- play sound to signal success of catching
+				gSounds["powerup"]:play()
 				gStateStack:push(BattleMessageState("Successfully caught " .. opponent.name), function() end, false)
 				Timer.after(0.5, function()
 					gStateStack:push(FadeInState(
