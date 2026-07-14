@@ -97,7 +97,7 @@ end
 
 function Pokemon:levelUp()
     self.level = self.level + 1
-    self.expToLevel = self.level * self.level * 5 * 0.75
+	self.expToLevel = self.level * self.level * 5 * 0.5 -- reduce max exp required to level up for faster demonstration :p
 
     return self:statsLevelUp()
 end

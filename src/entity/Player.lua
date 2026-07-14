@@ -13,7 +13,7 @@ function Player:init(def)
 
     self.party = Party {
         pokemon = {
-            Pokemon(Pokemon.getRandomDef(), 7) -- increase player level for faster demonstration :p
+            Pokemon(Pokemon.getRandomDef(), 6) -- increase initial player level for faster demonstration
         }
     }
 end
