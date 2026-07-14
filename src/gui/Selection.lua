@@ -25,6 +25,8 @@ function Selection:init(def)
     self.gapHeight = self.height / #self.items
 
     self.currentSelection = 1
+    -- reference to disableCursor flag
+    self.disableCursor = def.disableCursor
 end
 
 function Selection:update(dt)
@@ -48,7 +50,6 @@ function Selection:update(dt)
         gSounds['blip']:play()
     elseif love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         self.items[self.currentSelection].onSelect()
-        
         gSounds['blip']:stop()
         gSounds['blip']:play()
     end
@@ -60,8 +61,8 @@ function Selection:render()
     for i = 1, #self.items do
         local paddedY = currentY + (self.gapHeight / 2) - self.font:getHeight() / 2
 
-        -- draw selection marker if we're at the right index
-        if i == self.currentSelection then
+        -- draw selection marker if we're at the right index and self.disableCursor is false
+        if i == self.currentSelection  and not self.disableCursor then
             love.graphics.draw(gTextures['cursor'], self.x - 8, paddedY)
         end
 

@@ -212,11 +212,69 @@ function TakeTurnState:victory()
 
                         -- set our exp to whatever the overlap is
                         self.playerPokemon.currentExp = self.playerPokemon.currentExp - self.playerPokemon.expToLevel
-                        self.playerPokemon:levelUp()
+						-- extract stats' increases from levelUp method
+						local prevHP, prevAtk, prevDef, prevSpd =
+							self.playerPokemon.HP,
+							self.playerPokemon.attack,
+							self.playerPokemon.defense,
+							self.playerPokemon.speed
+						local hpInc, atkInc, defInc, spdInc = self.playerPokemon:levelUp()
 
                         gStateStack:push(BattleMessageState('Congratulations! Level Up!',
                         function()
-                            self:fadeOutWhite()
+                            -- display menu showing improved stats which gets closed upon pressing enter
+							gStateStack:push(Menu({
+								x = 64,
+								y = 64,
+								width = VIRTUAL_WIDTH / 2,
+								height = VIRTUAL_HEIGHT / 2,
+								items = {
+									{
+										text = "HP: "
+											.. tostring(prevHP)
+											.. " + "
+											.. tostring(hpInc)
+											.. " = "
+											.. tostring(prevHP + hpInc),
+										onSelect = function()
+											gStateStack:pop()
+										end,
+									},
+									{
+										text = "ATK: "
+											.. tostring(prevAtk)
+											.. " + "
+											.. tostring(atkInc)
+											.. " = "
+											.. tostring(prevAtk + atkInc),
+										onSelect = function()
+											gStateStack:pop()
+										end,
+									},
+									{
+										text = "DEF: "
+											.. tostring(prevDef)
+											.. " + "
+											.. tostring(defInc)
+											.. " = "
+											.. tostring(prevDef + defInc),
+										onSelect = function()
+											gStateStack:pop()
+										end,
+									},
+									{
+										text = "SPD: "
+											.. tostring(prevSpd)
+											.. " + "
+											.. tostring(spdInc)
+											.. " = "
+											.. tostring(prevSpd + spdInc),
+										onSelect = function()
+											gStateStack:pop()
+										end,
+									},
+								},
+							}))
                         end))
                     else
                         self:fadeOutWhite()
