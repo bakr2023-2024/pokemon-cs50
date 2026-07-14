@@ -18,85 +18,81 @@ function BattleState:init(player)
     self.opponent = Opponent {
         party = Party {
             pokemon = {
-                Pokemon(Pokemon.getRandomDef(), math.random(2, 6))
+                Pokemon(Pokemon.getRandomDef(), math.random(2, 5)) -- set max level to 5 for easier demonstration :p
             }
         }
     }
 
-    self.playerSprite = BattleSprite(self.player.party.pokemon[1].battleSpriteBack, 
-        -64, VIRTUAL_HEIGHT - 128)
-    self.opponentSprite = BattleSprite(self.opponent.party.pokemon[1].battleSpriteFront, 
-        VIRTUAL_WIDTH, 8)
+	self.playerSprite = BattleSprite(self.player.party.pokemon[1].battleSpriteBack, -64, VIRTUAL_HEIGHT - 128)
+	self.opponentSprite = BattleSprite(self.opponent.party.pokemon[1].battleSpriteFront, VIRTUAL_WIDTH, 8)
 
-    -- health bars for pokemon
-    self.playerHealthBar = ProgressBar {
-        x = VIRTUAL_WIDTH - 160,
-        y = VIRTUAL_HEIGHT - 80,
-        width = 152,
-        height = 6,
-        color = {r = 189/255, g = 32/255, b = 32/255},
-        value = self.player.party.pokemon[1].currentHP,
-        max = self.player.party.pokemon[1].HP
-    }
+	-- health bars for pokemon
+	self.playerHealthBar = ProgressBar({
+		x = VIRTUAL_WIDTH - 160,
+		y = VIRTUAL_HEIGHT - 80,
+		width = 152,
+		height = 6,
+		color = { r = 189 / 255, g = 32 / 255, b = 32 / 255 },
+		value = self.player.party.pokemon[1].currentHP,
+		max = self.player.party.pokemon[1].HP,
+	})
 
-    self.opponentHealthBar = ProgressBar {
-        x = 8,
-        y = 8,
-        width = 152,
-        height = 6,
-        color = {r = 189/255, g = 32/255, b = 32/255},
-        value = self.opponent.party.pokemon[1].currentHP,
-        max = self.opponent.party.pokemon[1].HP
-    }
+	self.opponentHealthBar = ProgressBar({
+		x = 8,
+		y = 8,
+		width = 152,
+		height = 6,
+		color = { r = 189 / 255, g = 32 / 255, b = 32 / 255 },
+		value = self.opponent.party.pokemon[1].currentHP,
+		max = self.opponent.party.pokemon[1].HP,
+	})
 
-    -- exp bar for player
-    self.playerExpBar = ProgressBar {
-        x = VIRTUAL_WIDTH - 160,
-        y = VIRTUAL_HEIGHT - 73,
-        width = 152,
-        height = 6,
-        color = {r = 32/255, g = 32/255, b = 189/255},
-        value = self.player.party.pokemon[1].currentExp,
-        max = self.player.party.pokemon[1].expToLevel
-    }
+	-- exp bar for player
+	self.playerExpBar = ProgressBar({
+		x = VIRTUAL_WIDTH - 160,
+		y = VIRTUAL_HEIGHT - 73,
+		width = 152,
+		height = 6,
+		color = { r = 32 / 255, g = 32 / 255, b = 189 / 255 },
+		value = self.player.party.pokemon[1].currentExp,
+		max = self.player.party.pokemon[1].expToLevel,
+	})
 
-    -- flag for rendering health (and exp) bars, shown after pokemon slide in
-    self.renderHealthBars = false
+	-- flag for rendering health (and exp) bars, shown after pokemon slide in
+	self.renderHealthBars = false
 
-    -- circles underneath pokemon that will slide from sides at start
-    self.playerCircleX = -68
-    self.opponentCircleX = VIRTUAL_WIDTH + 32
+	-- circles underneath pokemon that will slide from sides at start
+	self.playerCircleX = -68
+	self.opponentCircleX = VIRTUAL_WIDTH + 32
 
-    -- references to active pokemon
-    self.playerPokemon = self.player.party.pokemon[1]
-    self.opponentPokemon = self.opponent.party.pokemon[1]
+	-- references to active pokemon
+	self.playerPokemon = self.player.party.pokemon[1]
+	self.opponentPokemon = self.opponent.party.pokemon[1]
 end
 
-function BattleState:enter(params)
-    
-end
+function BattleState:enter(params) end
 
 function BattleState:exit()
-    gSounds['battle-music']:stop()
-    -- gSounds['field-music']:play()
+	gSounds["battle-music"]:stop()
+	-- gSounds['field-music']:play()
 end
 
 function BattleState:update(dt)
-    -- this will trigger the first time this state is actively updating on the stack
-    if not self.battleStarted then
-        self:triggerSlideIn()
-    end
+	-- this will trigger the first time this state is actively updating on the stack
+	if not self.battleStarted then
+		self:triggerSlideIn()
+	end
 end
 
 function BattleState:render()
-    love.graphics.setColor(214/255, 214/255, 214/255, 1)
-    love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+	love.graphics.setColor(214 / 255, 214 / 255, 214 / 255, 1)
+	love.graphics.rectangle("fill", 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
-    love.graphics.setColor(45/255, 184/255, 45/255, 124/255)
-    love.graphics.ellipse('fill', self.opponentCircleX, 60, 72, 24)
-    love.graphics.ellipse('fill', self.playerCircleX, VIRTUAL_HEIGHT - 64, 72, 24)
+	love.graphics.setColor(45 / 255, 184 / 255, 45 / 255, 124 / 255)
+	love.graphics.ellipse("fill", self.opponentCircleX, 60, 72, 24)
+	love.graphics.ellipse("fill", self.playerCircleX, VIRTUAL_HEIGHT - 64, 72, 24)
+	love.graphics.setColor(1, 1, 1, 1)
 
-    love.graphics.setColor(1, 1, 1, 1)
     self.opponentSprite:render()
     self.playerSprite:render()
 
