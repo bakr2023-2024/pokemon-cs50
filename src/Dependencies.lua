@@ -47,7 +47,7 @@ require 'src.states.game.PlayState'
 require 'src.states.game.StartState'
 require 'src.states.game.TakeTurnState'
 require 'src.states.game.CreatureSummaryState'
-
+require 'src.states.game.MenuState'
 require 'src.world.Level'
 require 'src.world.tile_ids'
 require 'src.world.Tile'

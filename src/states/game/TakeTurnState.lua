@@ -222,12 +222,13 @@ function TakeTurnState:victory()
 
                         gStateStack:push(BattleMessageState('Congratulations! Level Up!',
                         function()
-                            -- display menu showing improved stats which gets closed upon pressing enter
-							gStateStack:push(Menu({
-								x = 64,
-								y = 64,
+							-- display menu showing improved stats which gets closed upon pressing enter
+							local menu = Menu({
+								x = VIRTUAL_WIDTH / 4,
+								y = VIRTUAL_HEIGHT / 4,
 								width = VIRTUAL_WIDTH / 2,
 								height = VIRTUAL_HEIGHT / 2,
+								disableCursor = true,
 								items = {
 									{
 										text = "HP: "
@@ -238,6 +239,7 @@ function TakeTurnState:victory()
 											.. tostring(prevHP + hpInc),
 										onSelect = function()
 											gStateStack:pop()
+											self:fadeOutWhite()
 										end,
 									},
 									{
@@ -249,6 +251,7 @@ function TakeTurnState:victory()
 											.. tostring(prevAtk + atkInc),
 										onSelect = function()
 											gStateStack:pop()
+											self:fadeOutWhite()
 										end,
 									},
 									{
@@ -260,6 +263,7 @@ function TakeTurnState:victory()
 											.. tostring(prevDef + defInc),
 										onSelect = function()
 											gStateStack:pop()
+											self:fadeOutWhite()
 										end,
 									},
 									{
@@ -271,10 +275,12 @@ function TakeTurnState:victory()
 											.. tostring(prevSpd + spdInc),
 										onSelect = function()
 											gStateStack:pop()
+											self:fadeOutWhite()
 										end,
 									},
 								},
-							}))
+							})
+							gStateStack:push(MenuState(menu))
                         end))
                     else
                         self:fadeOutWhite()
